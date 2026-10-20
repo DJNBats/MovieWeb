@@ -6,6 +6,8 @@ const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}
 
 // Elementos do DOM
 const main = document.getElementById('main');
+const form = document.getElementById('form');
+const search = document.getElementById('search');
 
 // Dados estáticos de fallback (garante que a aplicação funcione mesmo com a chave de API de teste)
 const STATIC_MOVIES = [
@@ -63,11 +65,18 @@ const STATIC_MOVIES = [
 getMovies(API_URL);
 
 // Função para obter filmes da API ou fallback estático
-async function getMovies(url) {
+async function getMovies(url, searchTerm = '') {
     try {
-        // Se a chave for a de demonstração/falsa, usar diretamente os dados de demonstração
+        // Se a chave for a de demonstração/falsa, filtrar dados locais
         if (API_KEY.includes('abc123def456')) {
-            showMovies(STATIC_MOVIES);
+            if (searchTerm) {
+                const filtered = STATIC_MOVIES.filter(movie =>
+                    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+                showMovies(filtered);
+            } else {
+                showMovies(STATIC_MOVIES);
+            }
             return;
         }
 
@@ -79,7 +88,14 @@ async function getMovies(url) {
         showMovies(data.results);
     } catch (error) {
         console.warn('Não foi possível carregar da API TMDB. A apresentar filmes estáticos.', error);
-        showMovies(STATIC_MOVIES);
+        if (searchTerm) {
+            const filtered = STATIC_MOVIES.filter(movie =>
+                movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            showMovies(filtered);
+        } else {
+            showMovies(STATIC_MOVIES);
+        }
     }
 }
 
@@ -139,3 +155,19 @@ function getClassByRate(vote) {
         return 'red';
     }
 }
+
+// Pesquisa de filmes pelo formulário
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const searchTerm = search.value.trim();
+
+    if (searchTerm && searchTerm !== '') {
+        // Pesquisa pelo título (substitui os filmes apresentados)
+        getMovies(SEARCH_API + searchTerm, searchTerm);
+        search.value = '';
+    } else {
+        // Se a pesquisa for submetida sem texto, voltam a ser apresentados os filmes populares
+        getMovies(API_URL);
+    }
+});
