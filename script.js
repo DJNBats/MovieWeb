@@ -1,5 +1,5 @@
 // Configuração da API TMDB
-const API_KEY = 'abc123def456ghi789jkl012mno345pq'; //chave falsa!!
+const API_KEY = '53178150e837ff10e36ad0cf2dd4485e';
 const API_URL = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
 const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query="`;
