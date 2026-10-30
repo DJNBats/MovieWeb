@@ -1,186 +1,116 @@
-# MovieWeb - Aula Prática 1 (HTML, CSS, JavaScript e Git)
+# MovieWeb - Desenvolvimento Web Colaborativo
 
 **Unidade Curricular:** Tópicos de Informática e Telecomunicações II / Linguagens e Tecnologias Web (LTW)  
 **Instituição:** Instituto de Engenharia e Ciências do Mar (ISECMAR-UTA)  
-**Autor:** Dalton (DJNBats)  
-**Email:** daltonbaptista5@gmail.com  
+**Docente:** Prof.ª Carmen Silva  
+**Repositório Remoto (GitHub Privado):** [https://github.com/DJNBats/MovieWeb](https://github.com/DJNBats/MovieWeb)
 
 ---
 
-## 📌 1. Visão Geral do Projeto
+## 👥 Equipa de Desenvolvimento & Organização do Grupo
 
-O **MovieWeb** é uma aplicação Web front-end desenvolvida com **HTML5**, **CSS3** e **JavaScript (ES6+)**, desenhada para consulta e pesquisa de filmes. A aplicação integra a API pública do **The Movie Database (TMDb)** e inclui um conjunto de dados de fallback estáticos de alta fidelidade para garantir funcionamento contínuo, mesmo quando utilizada com uma chave de teste (como a chave de demonstração fornecida na aula).
+Conforme as diretrizes da **Aula Prática 2 (Slides 10 a 13)**, o projeto foi desenvolvido de forma colaborativa com recurso ao Git e GitHub:
 
-### Requisitos Implementados:
-- **Apresentação de filmes:** Ao carregar a página, a aplicação obtém e renderiza dinamicamente os filmes populares.
-- **Informação do cartão:** Cada cartão de filme exibe o cartaz oficial, o título, a classificação média (formatada) e a sinopse.
+| Estudante | Papel / Função | Responsabilidades no Repositório |
+| :--- | :--- | :--- |
+| **Dalton Baptista** (`DJNBats`) | **Responsável pelo Repositório** | Criação e configuração do repositório remoto, gestão de branches, revisão de Pull Requests e merge na branch `main`. Implementação do menu rotativo e integração de vistas. |
+| **Flávio Monteiro** (`FlavioRLMonteiro`) | **Colaborador / Desenvolvedor** | Desenvolvimento de funcionalidades no catálogo de filmes, tratamento de dados da API e implementação de filtros. |
+| **Karen Santos** | **Colaboradora / Desenvolvedora** | Desenvolvimento de estilos visuais, secção informativa do projeto e testes de integração multiplataforma. |
+
+---
+
+## 📌 Visão Geral do Projeto
+
+O **MovieWeb** é uma aplicação Web front-end moderna construída com **HTML5 semântico**, **CSS3 avançado** e **JavaScript (ES6+) assíncrono**, concebida para exploração, avaliação e pesquisa de filmes através da API do **The Movie Database (TMDb)** com fallback estático de alta fidelidade.
+
+### 🌟 Funcionalidades Implementadas
+
+#### Aula Prática 1: Catálogo e Pesquisa
+- **Apresentação dinâmica de filmes:** Obtenção e renderização dos filmes mais populares no DOM.
+- **Cartões de filme completos:** Apresentação de poster, título, classificação numérica e sinopse em camada deslizante (*overview hover*).
 - **Classificação por cores:**
   - 🟢 **Verde (`.green`):** Classificação $\ge 8.0$
   - 🟠 **Laranja (`.orange`):** Classificação $\ge 5.0$ e $< 8.0$
   - 🔴 **Vermelho (`.red`):** Classificação $< 5.0$
-- **Sinopse Dinâmica (CSS Hover):** Ao passar o cursor do rato sobre qualquer cartão (`.movie:hover .overview`), a sinopse sobe suavemente (*slide-up*) sobre o cartão com animação fluida.
-- **Pesquisa por Título:** A barra de pesquisa no cabeçalho permite filtrar filmes por título em tempo real ou via API. Se o formulário for submetido sem texto (vazio), a aplicação restaura automaticamente os filmes populares.
+- **Pesquisa por título:** Filtragem instantânea via API TMDb ou catálogo local ao submeter a barra de pesquisa.
+
+#### Aula Prática 2: Menu Lateral Rotativo Interativo (Rotating Navigation)
+- **Menu Lateral Rotativo (Requisito 1):**
+  - Botão circular de alternância no canto superior esquerdo com cor de destaque (`#ff7979`).
+  - Ícone de hambúrguer (`fas fa-bars`) para abrir o menu e ícone de fecho (`fas fa-times`) ao abrir.
+  - Efeito visual de rotação do conteúdo principal (`transform: rotate(-20deg)` com `transform-origin: top left`).
+  - Rotação sincronizada do botão circular (`transform: rotate(-70deg)`).
+- **Três Itens de Navegação (Requisito 2):**
+  - 🏠 **ITEM 1:** Filmes em Destaque (catálogo principal e pesquisa).
+  - ⭐ **ITEM 2:** Filmes Mais Votados (Top Rated - filmes com melhor classificação).
+  - ✉️ **ITEM 3:** Sobre o Projeto & Equipa (apresentação detalhada da equipa ISECMAR-UTA, tecnologias e curso).
+- **Integração das Funcionalidades (Requisito 6):**
+  - A pesquisa de filmes permanece acessível e operacional em qualquer momento.
+  - Ao pesquisar a partir dos itens 2 ou 3, a aplicação regressa automaticamente ao catálogo principal para apresentar os resultados.
+  - Fecho rápido do menu ao pressionar a tecla `Escape` ou ao clicar em qualquer item do menu.
 
 ---
 
-## 📁 2. Estrutura de Ficheiros
+## 📁 Estrutura de Ficheiros
 
 ```text
 MovieWeb/
-├── .git/               # Repositório Git com histórico e commits estruturados
-├── index.html          # Estrutura semântica HTML da aplicação
-├── style.css           # Estilos modernos (dark theme, grid flexível e transições)
-├── script.js           # Lógica JavaScript, integração da API e manipulação do DOM
-└── README.md           # Documentação completa e guia de comandos Git
+├── .git/               # Repositório Git com histórico de commits e branches
+├── index.html          # Estrutura semântica HTML e container rotativo
+├── style.css           # Estilos CSS, animações 2D/3D e responsividade
+├── script.js           # Lógica JavaScript, integração da API, rotação e navegação
+└── README.md           # Documentação completa e relatório prático
 ```
 
 ---
 
-## 🛠️ 3. Histórico de Desenvolvimento e Comandos Git Realizados
+## 🛠️ Metodologia de Trabalho Colaborativo com Git & GitHub
 
-Conforme exigido pelo guião prático, o desenvolvimento seguiu uma metodologia estruturada de versionamento em Git:
+O desenvolvimento colaborativo respeitou rigorosamente as regras estipuladas no guião prático:
 
-### Slide 6: Inicialização do Repositório Local
+### 1. Branches por Funcionalidade
+Nenhum colaborador realiza commits diretos na branch principal (`main`). Cada funcionalidade é desenvolvida numa branch isolada:
+- `feature-menu-rotativo`: Estrutura do menu rotativo, botões circulares e navegação entre os 3 itens.
+- `feature-item1`: Refinamento do catálogo e pesquisa.
+- `feature-item2`: Secção dos filmes mais votados.
+- `feature-item3`: Secção sobre o projeto e equipa.
+
+### 2. Fluxo de Trabalho (Workflow Individual)
 ```bash
-# Aceder à pasta do projeto
-cd MovieWeb
-
-# Inicializar o repositório na branch principal (main)
-git init -b main
-
-# Configurar autor do repositório
-git config user.name "Dalton"
-git config user.email "daltonbaptista5@gmail.com"
-```
-
-### Slide 7: Primeiro Commit - Estrutura HTML
-```bash
-git add index.html
-git commit -m "Estrutura inicial HTML"
-```
-
-### Slides 8 e 9: Segundo Commit - Estilização CSS com Branch e Merge
-```bash
-# Criar e mudar para a branch featureCSS
-git checkout -b featureCSS
-
-# Adicionar estilos e registar commit
-git add style.css
-git commit -m "Estilização CSS da aplicação"
-
-# Regressar à branch principal
+# 1. Atualizar a branch main local
 git checkout main
+git pull origin main
 
-# Integrar alterações via merge fast-forward
-git merge featureCSS
+# 2. Criar uma nova branch para a funcionalidade
+git checkout -b feature-nome-da-funcionalidade
 
-# Remover branch temporária
-git branch -d featureCSS
+# 3. Implementar o código e registar commits descritivos
+git add .
+git commit -m "Descricao clara da alteracao"
+
+# 4. Publicar a branch no repositório remoto
+git push -u origin feature-nome-da-funcionalidade
 ```
 
-### Slide 10: Terceiro Commit - JavaScript e Manipulação do DOM
-```bash
-# Criar branch para JavaScript
-git checkout -b featureJS
-
-# Adicionar script.js com fetch de filmes e criação dos cartões
-git add script.js
-git commit -m "JavaScript e manipulação do DOM"
-
-# Integrar na branch principal e remover a branch temporária
-git checkout main
-git merge featureJS
-git branch -d featureJS
-```
-
-### Slide 11: Quarto Commit - Funcionalidade de Pesquisa de Filmes
-```bash
-# Criar branch para a pesquisa
-git checkout -b featureSearch
-
-# Implementar evento de pesquisa e fallback no script.js
-git add script.js
-git commit -m "Implementa funcionalidade de pesquisa de filmes por título"
-
-# Integrar e remover branch
-git checkout main
-git merge featureSearch
-git branch -d featureSearch
-```
-
-### Verificação do Histórico:
-```bash
-git log --oneline --graph
-```
-Saída obtida:
-```text
-* 9fa5f0a (HEAD -> main) Implementa funcionalidade de pesquisa de filmes por título
-* a970591 JavaScript e manipulação do DOM
-* 10a3484 Estilização CSS da aplicação
-* 85d00c4 Estrutura inicial HTML
-```
+### 3. Submissão e Integração de Pull Requests
+1. O estudante acede ao GitHub e cria um **Pull Request (PR)** da sua branch para a branch `main`.
+2. O responsável pelo repositório (**Dalton Baptista**) revê o código, valida a compatibilidade e a ausência de conflitos.
+3. Após aprovação, o responsável efetua o **Merge** do Pull Request na branch `main`.
 
 ---
 
-## 📖 4. Respostas e Guia dos Exercícios Experimentais (Slides 12 a 15)
+## 🚀 Como Executar e Testar a Aplicação
 
-O guião inclui exercícios práticos adicionais de manipulação do repositório Git:
-
-### Slide 12: Remover e Restaurar Ficheiros
-1. **Simular remoção de um ficheiro de teste:**
+1. Clone o repositório ou faça o download dos ficheiros:
    ```bash
-   touch teste.txt
-   git add teste.txt
-   git commit -m "Adiciona ficheiro de teste"
-   git rm teste.txt
-   git commit -m "Remove ficheiro de teste"
+   git clone https://github.com/DJNBats/MovieWeb.git
+   cd MovieWeb
    ```
-2. **Restaurar o ficheiro a partir de um commit anterior:**
-   ```bash
-   # Restaurar o ficheiro a partir do penúltimo commit (HEAD~1)
-   git checkout HEAD~1 -- teste.txt
-   # Ou com git restore:
-   git restore --source=HEAD~1 teste.txt
-   git add teste.txt
-   git commit -m "Restaura ficheiro teste.txt"
-   ```
-
-### Slide 13: Renomear Ficheiros
-```bash
-# Renomear ficheiro de forma rastreada pelo Git:
-git mv teste.txt exemplo.txt
-git commit -m "Renomeia teste.txt para exemplo.txt"
-git log --stat -n 1
-```
-
-### Slide 14: Alterar um Commit Existente (`--amend`)
-```bash
-# Criar commit de teste
-echo "teste" >> exemplo.txt
-git commit -am "Mensagem com erro"
-
-# Corrigir a mensagem do último commit
-git commit --amend -m "Mensagem corrigida com --amend"
-```
-> **Explicação Teórica (Pergunta do Slide 14):**
-> - **Alterar um commit local:** É uma operação segura porque o commit apenas existe na sua máquina. O `--amend` regrava o commit com um novo identificador SHA-1 sem impactar ninguém.
-> - **Modificar um commit já partilhado (pushed para um repositório remoto):** É perigoso e não recomendado. Se alterar a história de um commit já enviado para o GitHub/remoto, a sua história divergirá da dos seus colegas de equipa. Para enviar a alteração seria necessário um `git push --force`, o que sobrescreveria o histórico de outros colaboradores e geraria conflitos graves de merge.
-
-### Slide 15: Recuar no Histórico com `git reset`
-> **Efeito das opções sobre Commits, Staging Area e Working Directory:**
->
-> | Opção | O commit é desfeito? | A Staging Area (Index) é alterada? | O Working Directory (Ficheiros) é alterado? |
-> | :--- | :--- | :--- | :--- |
-> | **`git reset --soft HEAD~1`** | **Sim** (HEAD aponta para o commit anterior) | **Não** (as alterações mantêm-se preparadas/staged) | **Não** (o código permanece intacto) |
-> | **`git reset --mixed HEAD~1`** *(padrão)* | **Sim** | **Sim** (as alterações saem da staging area) | **Não** (as alterações continuam no disco como não preparadas) |
-> | **`git reset --hard HEAD~1`** | **Sim** | **Sim** (staging area é limpa) | **Sim (ATENÇÃO!)** (todas as alterações no código são destruídas irreversivelmente) |
-
----
-
-## 🚀 5. Como Executar a Aplicação
-
-1. Basta abrir o ficheiro `index.html` em qualquer navegador web moderno (Google Chrome, Microsoft Edge, Firefox).
-2. Se pretender utilizar a sua própria chave real da API do TMDb, basta abrir o ficheiro `script.js` e substituir o valor da constante `API_KEY`:
-   ```javascript
-   const API_KEY = 'A_SUA_CHAVE_TMDB_AQUI';
-   ```
+2. Abra o ficheiro `index.html` diretamente em qualquer navegador moderno (Chrome, Edge, Firefox).
+3. **Interações do Menu:**
+   - Clique no botão circular vermelho no canto superior esquerdo para abrir o menu rotativo.
+   - Observe a rotação suave do ecrã e a aparição dos 3 itens à esquerda em degraus.
+   - Clique em **ITEM 1**, **ITEM 2** ou **ITEM 3** para alternar instantaneamente de secção.
+   - Pressione o botão com o "X" ou a tecla `Esc` para recolher o menu.
+4. **Pesquisa:**
+   - Utilize o campo no cabeçalho para pesquisar qualquer filme (ex.: *Spider-Man*, *Odyssey*).
