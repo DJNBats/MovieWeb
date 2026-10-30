@@ -1,15 +1,31 @@
+// ==========================================================================
 // Configuração da API TMDB
+// ==========================================================================
 const API_KEY = '53178150e837ff10e36ad0cf2dd4485e';
 const API_URL = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
 const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query="`;
 
+// ==========================================================================
 // Elementos do DOM
+// ==========================================================================
+const container = document.getElementById('container');
+const openBtn = document.getElementById('open');
+const closeBtn = document.getElementById('close');
+
 const main = document.getElementById('main');
+const topRatedSection = document.getElementById('top-rated-section');
+const aboutSection = document.getElementById('about-section');
+const sectionTitle = document.getElementById('section-title');
+
 const form = document.getElementById('form');
 const search = document.getElementById('search');
 
-// Dados estáticos de fallback (garante que a aplicação funcione mesmo com a chave de API de teste)
+const navItems = document.querySelectorAll('nav ul li');
+
+// ==========================================================================
+// Dados estáticos de fallback (garante que a aplicação funcione sempre)
+// ==========================================================================
 const STATIC_MOVIES = [
     {
         title: 'Spider-Man: Brand New Day',
@@ -22,6 +38,18 @@ const STATIC_MOVIES = [
         poster_path: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=800&auto=format&fit=crop&q=80',
         vote_average: 8.0,
         overview: 'Uma jornada épica inspirada no clássico da literatura grega antiga, acompanhando os desafios mitológicos e marítimos de regresso ao lar.'
+    },
+    {
+        title: 'Project Hail Mary',
+        poster_path: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80',
+        vote_average: 8.6,
+        overview: 'Um astronauta solitário acorda numa nave espacial sem memória da sua identidade e descobre que é a última esperança para salvar a humanidade da extinção.'
+    },
+    {
+        title: 'Hope',
+        poster_path: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80',
+        vote_average: 6.8,
+        overview: 'Num futuro distópico, sobreviventes unem esforços para restabelecer a esperança e reconstruir a sociedade após uma crise global devastadora.'
     },
     {
         title: 'Matchbox the Movie',
@@ -37,21 +65,9 @@ const STATIC_MOVIES = [
     },
     {
         title: 'Resident Evil',
-        poster_path: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=80',
+        poster_path: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?w=800&auto=format&fit=crop&q=80',
         vote_average: 7.3,
         overview: 'Uma unidade militar especial combate um poderoso supercomputador descontrolado e centenas de cientistas que se transformaram em criaturas mutantes.'
-    },
-    {
-        title: 'Galactic Horizon',
-        poster_path: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80',
-        vote_average: 6.4,
-        overview: 'Exploradores espaciais desbravam galáxias desconhecidas à procura de um novo planeta habitável perante o esgotamento dos recursos terrestres.'
-    },
-    {
-        title: 'Shadow Realm',
-        poster_path: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?w=800&auto=format&fit=crop&q=80',
-        vote_average: 4.8,
-        overview: 'Um misterioso portal abre-se numa cidade remota, libertando sombras que distorcem o tempo e a realidade dos seus habitantes.'
     },
     {
         title: 'The Disaster Zone',
@@ -61,22 +77,76 @@ const STATIC_MOVIES = [
     }
 ];
 
-// Obter filmes iniciais (populares)
+// Cache local de filmes obtidos da API para alimentar os itens do menu
+let cachedMovies = [...STATIC_MOVIES];
+
+// ==========================================================================
+// Controlo do Menu Rotativo (Requisito 1)
+// ==========================================================================
+if (openBtn && closeBtn && container) {
+    openBtn.addEventListener('click', () => {
+        container.classList.add('show-nav');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        container.classList.remove('show-nav');
+    });
+}
+
+// Fechar menu ao pressionar Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && container.classList.contains('show-nav')) {
+        container.classList.remove('show-nav');
+    }
+});
+
+// ==========================================================================
+// Navegação Entre os Itens do Menu (Requisito 2)
+// ==========================================================================
+navItems.forEach((item) => {
+    item.addEventListener('click', () => {
+        const target = item.dataset.target;
+        switchTab(target);
+        // Fecha o menu após a seleção
+        container.classList.remove('show-nav');
+    });
+});
+
+function switchTab(target) {
+    // Atualizar classe ativa nos itens do menu
+    navItems.forEach((li) => {
+        li.classList.toggle('active', li.dataset.target === target);
+    });
+
+    // Ocultar todas as vistas
+    main.classList.remove('active');
+    topRatedSection.classList.remove('active');
+    aboutSection.classList.remove('active');
+
+    // Apresentar a secção selecionada
+    if (target === 'item1') {
+        main.classList.add('active');
+        sectionTitle.innerHTML = '<i class="fas fa-film"></i> ITEM 1: Filmes em Destaque';
+    } else if (target === 'item2') {
+        topRatedSection.classList.add('active');
+        sectionTitle.innerHTML = '<i class="fas fa-star"></i> ITEM 2: Filmes Mais Votados (Top Rated)';
+        renderTopRated();
+    } else if (target === 'item3') {
+        aboutSection.classList.add('active');
+        sectionTitle.innerHTML = '<i class="fas fa-info-circle"></i> ITEM 3: Sobre o Projeto & Equipa';
+        renderAbout();
+    }
+}
+
+// ==========================================================================
+// Funções de Obtenção e Renderização de Filmes (Item 1)
+// ==========================================================================
 getMovies(API_URL);
 
-// Função para obter filmes da API ou fallback estático
 async function getMovies(url, searchTerm = '') {
     try {
-        // Se a chave for a de demonstração/falsa, filtrar dados locais
         if (API_KEY.includes('abc123def456')) {
-            if (searchTerm) {
-                const filtered = STATIC_MOVIES.filter(movie =>
-                    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                showMovies(filtered);
-            } else {
-                showMovies(STATIC_MOVIES);
-            }
+            filterLocal(searchTerm);
             return;
         }
 
@@ -85,33 +155,40 @@ async function getMovies(url, searchTerm = '') {
             throw new Error(`Erro na API: ${res.status}`);
         }
         const data = await res.json();
-        showMovies(data.results);
+        if (data.results && data.results.length > 0) {
+            cachedMovies = data.results;
+            showMovies(data.results, main);
+        } else {
+            filterLocal(searchTerm);
+        }
     } catch (error) {
         console.warn('Não foi possível carregar da API TMDB. A apresentar filmes estáticos.', error);
-        if (searchTerm) {
-            const filtered = STATIC_MOVIES.filter(movie =>
-                movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            showMovies(filtered);
-        } else {
-            showMovies(STATIC_MOVIES);
-        }
+        filterLocal(searchTerm);
     }
 }
 
-// Apresentar lista de filmes no DOM
-function showMovies(movies) {
-    main.innerHTML = '';
+function filterLocal(searchTerm) {
+    if (searchTerm) {
+        const filtered = STATIC_MOVIES.filter(movie =>
+            movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        showMovies(filtered, main);
+    } else {
+        showMovies(STATIC_MOVIES, main);
+    }
+}
+
+function showMovies(movies, targetElement) {
+    targetElement.innerHTML = '';
 
     if (!movies || movies.length === 0) {
-        main.innerHTML = '<p style="color: #fff; font-size: 1.2rem; text-align: center; width: 100%;">Nenhum filme encontrado.</p>';
+        targetElement.innerHTML = '<p style="color: #fff; font-size: 1.2rem; text-align: center; width: 100%;">Nenhum filme encontrado.</p>';
         return;
     }
 
     movies.forEach((movie) => {
         const { title, poster_path, vote_average, overview } = movie;
 
-        // Construir caminho correto para o cartaz
         let posterUrl = '';
         if (poster_path && poster_path.startsWith('http')) {
             posterUrl = poster_path;
@@ -138,14 +215,10 @@ function showMovies(movies) {
             </div>
         `;
 
-        main.appendChild(movieEl);
+        targetElement.appendChild(movieEl);
     });
 }
 
-// Determinar classe de cor com base na classificação:
-// - Verde: >= 8
-// - Laranja: >= 5 e < 8
-// - Vermelho: < 5
 function getClassByRate(vote) {
     if (vote >= 8) {
         return 'green';
@@ -156,18 +229,98 @@ function getClassByRate(vote) {
     }
 }
 
-// Pesquisa de filmes pelo formulário
+// ==========================================================================
+// Conteúdo do Item 2: Filmes Mais Votados
+// ==========================================================================
+function renderTopRated() {
+    // Filtra filmes com avaliação igual ou superior a 7.5 ou ordena por vote_average
+    const topMovies = [...cachedMovies]
+        .sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0))
+        .filter(m => (m.vote_average || 0) >= 7.0);
+
+    showMovies(topMovies.length > 0 ? topMovies : cachedMovies, topRatedSection);
+}
+
+// ==========================================================================
+// Conteúdo do Item 3: Sobre o Projeto & Equipa de Estudantes
+// ==========================================================================
+function renderAbout() {
+    aboutSection.innerHTML = `
+        <div class="about-container">
+            <div class="about-card">
+                <h3><i class="fas fa-film"></i> Sobre a Aplicação MovieWeb</h3>
+                <p>
+                    O <strong>MovieWeb</strong> é uma plataforma web interativa desenvolvida com recurso a 
+                    <strong>HTML5 semântico</strong>, <strong>CSS3 avançado</strong> (animações e transformações tridimensionais) 
+                    e <strong>JavaScript ES6+</strong>. Permite explorar catálogos cinematográficos atualizados, consultar 
+                    classificações, ler sinopses detalhadas e realizar pesquisas por título em tempo real.
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag"><i class="fab fa-html5"></i> HTML5 Semântico</span>
+                    <span class="tech-tag"><i class="fab fa-css3-alt"></i> CSS3 & Rotating Nav</span>
+                    <span class="tech-tag"><i class="fab fa-js-square"></i> JavaScript ES6+</span>
+                    <span class="tech-tag"><i class="fas fa-database"></i> TMDb API REST</span>
+                    <span class="tech-tag"><i class="fab fa-git-alt"></i> Git & GitHub Colaborativo</span>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <h3><i class="fas fa-users"></i> Equipa de Desenvolvimento (ISECMAR-UTA)</h3>
+                <p>
+                    Trabalho colaborativo realizado no âmbito da unidade curricular de 
+                    <strong>Tópicos de Informática e Telecomunicações II / Linguagens e Tecnologias Web</strong>:
+                </p>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="avatar"><i class="fas fa-user-tie"></i></div>
+                        <h4>Dalton Baptista</h4>
+                        <div class="role">Responsável pelo Repositório</div>
+                        <div class="tasks">Configuração do repositório, branch main, menu rotativo e integração de Pull Requests.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar"><i class="fas fa-user-astronaut"></i></div>
+                        <h4>Flávio Monteiro</h4>
+                        <div class="role">Colaborador / Desenvolvedor</div>
+                        <div class="tasks">Desenvolvimento de funcionalidades e conteúdos do catálogo e filtros do MovieWeb.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
+                        <h4>Karen Santos</h4>
+                        <div class="role">Colaboradora / Desenvolvedora</div>
+                        <div class="tasks">Desenvolvimento de funcionalidades do menu lateral, estilos visuais e testes de integração.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <h3><i class="fas fa-university"></i> Instituição & Unidade Curricular</h3>
+                <p>
+                    <strong>Universidade Técnica do Atlântico (UTA)</strong><br>
+                    <strong>Instituto de Engenharia e Ciências do Mar (ISECMAR)</strong><br>
+                    Docente: Professora Carmen Silva &bull; Ano Letivo 2026/2027
+                </p>
+            </div>
+        </div>
+    `;
+}
+
+// ==========================================================================
+// Pesquisa de Filmes (Requisito 6: integração funcional)
+// ==========================================================================
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const searchTerm = search.value.trim();
 
+    // Se estiver noutra secção, regressa ao catálogo principal para ver os resultados
+    if (!main.classList.contains('active')) {
+        switchTab('item1');
+    }
+
     if (searchTerm && searchTerm !== '') {
-        // Pesquisa pelo título (substitui os filmes apresentados)
         getMovies(SEARCH_API + searchTerm, searchTerm);
         search.value = '';
     } else {
-        // Se a pesquisa for submetida sem texto, voltam a ser apresentados os filmes populares
         getMovies(API_URL);
     }
 });

@@ -4,16 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieWeb</title>
+    <!-- Font Awesome para ícones do menu e botões -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <form id="form">
-            <input type="text" id="search" class="search" placeholder="Search" autocomplete="off">
-        </form>
-    </header>
+    <!-- Content Container com efeito de rotação -->
+    <div class="container" id="container">
+        <!-- Botão circular de alternância (abrir/fechar) -->
+        <div class="circle-container">
+            <div class="circle">
+                <button id="close" aria-label="Fechar menu">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button id="open" aria-label="Abrir menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
 
-    <main id="main"></main>
+        <header>
+            <div class="header-content">
+                <h1 class="logo">Movie<span>Web</span></h1>
+                <form id="form">
+                    <input type="text" id="search" class="search" placeholder="Pesquisar filmes..." autocomplete="off">
+                </form>
+            </div>
+        </header>
+
+        <!-- Indicador de secção ativa -->
+        <div class="section-banner">
+            <h2 id="section-title"><i class="fas fa-film"></i> Filmes em Destaque</h2>
+        </div>
+
+        <!-- Conteúdo do Item 1: Catálogo Principal / Pesquisa -->
+        <main id="main" class="tab-view active"></main>
+
+        <!-- Conteúdo do Item 2: Mais Votados (Top Rated) -->
+        <section id="top-rated-section" class="tab-view"></section>
+
+        <!-- Conteúdo do Item 3: Sobre o Projeto & Equipa -->
+        <section id="about-section" class="tab-view"></section>
+    </div>
+
+    <!-- Menu Lateral com 3 itens (navegação interativa) -->
+    <nav>
+        <ul>
+            <li id="nav-item-1" class="active" data-target="item1">
+                <i class="fas fa-home"></i>
+                <span>ITEM 1</span>
+            </li>
+            <li id="nav-item-2" data-target="item2">
+                <i class="fas fa-star"></i>
+                <span>ITEM 2</span>
+            </li>
+            <li id="nav-item-3" data-target="item3">
+                <i class="fas fa-envelope"></i>
+                <span>ITEM 3</span>
+            </li>
+        </ul>
+    </nav>
 
     <script src="script.js"></script>
 </body>
