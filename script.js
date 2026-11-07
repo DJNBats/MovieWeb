@@ -5,7 +5,7 @@ const API_KEY = '53178150e837ff10e36ad0cf2dd4485e';
 const API_URL = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
 const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query="`;
-
+const ACTION_API = `https://api.themoviedb.org/3/discover/movie?with_genres=28&sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
 // ==========================================================================
 // Elementos do DOM
 // ==========================================================================
@@ -77,6 +77,10 @@ const STATIC_MOVIES = [
     }
 ];
 
+const ACTION_FALLBACK = STATIC_MOVIES.filter(m =>
+    ['Spider-Man: Brand New Day', 'Resident Evil', 'Matchbox the Movie'].includes(m.title)
+);
+
 // Cache local de filmes obtidos da API para alimentar os itens do menu
 let cachedMovies = [...STATIC_MOVIES];
 
@@ -133,8 +137,8 @@ function switchTab(target) {
         renderTopRated();
     } else if (target === 'item3') {
         aboutSection.classList.add('active');
-        sectionTitle.innerHTML = '<i class="fas fa-info-circle"></i> ITEM 3: Sobre o Projeto & Equipa';
-        renderAbout();
+        sectionTitle.innerHTML = '<i class="fas fa-fire"></i> ITEM 3: Filmes de Ação';
+        renderAction();
     }
 }
 
@@ -242,66 +246,23 @@ function renderTopRated() {
 }
 
 // ==========================================================================
-// Conteúdo do Item 3: Sobre o Projeto & Equipa de Estudantes
+// Conteúdo do Item 3: Filmes de Ação
 // ==========================================================================
-function renderAbout() {
-    aboutSection.innerHTML = `
-        <div class="about-container">
-            <div class="about-card">
-                <h3><i class="fas fa-film"></i> Sobre a Aplicação MovieWeb</h3>
-                <p>
-                    O <strong>MovieWeb</strong> é uma plataforma web interativa desenvolvida com recurso a 
-                    <strong>HTML5 semântico</strong>, <strong>CSS3 avançado</strong> (animações e transformações tridimensionais) 
-                    e <strong>JavaScript ES6+</strong>. Permite explorar catálogos cinematográficos atualizados, consultar 
-                    classificações, ler sinopses detalhadas e realizar pesquisas por título em tempo real.
-                </p>
-                <div class="tech-tags">
-                    <span class="tech-tag"><i class="fab fa-html5"></i> HTML5 Semântico</span>
-                    <span class="tech-tag"><i class="fab fa-css3-alt"></i> CSS3 & Rotating Nav</span>
-                    <span class="tech-tag"><i class="fab fa-js-square"></i> JavaScript ES6+</span>
-                    <span class="tech-tag"><i class="fas fa-database"></i> TMDb API REST</span>
-                    <span class="tech-tag"><i class="fab fa-git-alt"></i> Git & GitHub Colaborativo</span>
-                </div>
-            </div>
+async function renderAction() {
+    try {
+        const res = await fetch(ACTION_API);
+        if (!res.ok) throw new Error(`Erro na API: ${res.status}`);
+        const data = await res.json();
 
-            <div class="about-card">
-                <h3><i class="fas fa-users"></i> Equipa de Desenvolvimento (ISECMAR-UTA)</h3>
-                <p>
-                    Trabalho colaborativo realizado no âmbito da unidade curricular de 
-                    <strong>Tópicos de Informática e Telecomunicações II / Linguagens e Tecnologias Web</strong>:
-                </p>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="avatar"><i class="fas fa-user-tie"></i></div>
-                        <h4>Dalton Baptista</h4>
-                        <div class="role">Responsável pelo Repositório</div>
-                        <div class="tasks">Configuração do repositório, branch main, menu rotativo e integração de Pull Requests.</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="avatar"><i class="fas fa-user-astronaut"></i></div>
-                        <h4>Flávio Monteiro</h4>
-                        <div class="role">Colaborador / Desenvolvedor</div>
-                        <div class="tasks">Desenvolvimento de funcionalidades e conteúdos do catálogo e filtros do MovieWeb.</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
-                        <h4>Karen Santos</h4>
-                        <div class="role">Colaboradora / Desenvolvedora</div>
-                        <div class="tasks">Desenvolvimento de funcionalidades do menu lateral, estilos visuais e testes de integração.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="about-card">
-                <h3><i class="fas fa-university"></i> Instituição & Unidade Curricular</h3>
-                <p>
-                    <strong>Universidade Técnica do Atlântico (UTA)</strong><br>
-                    <strong>Instituto de Engenharia e Ciências do Mar (ISECMAR)</strong><br>
-                    Docente: Professora Carmen Silva &bull; Ano Letivo 2026/2027
-                </p>
-            </div>
-        </div>
-    `;
+        if (data.results && data.results.length > 0) {
+            showMovies(data.results, aboutSection);
+        } else {
+            showMovies(ACTION_FALLBACK, aboutSection);
+        }
+    } catch (error) {
+        console.warn('Falha ao carregar filmes de ação. A usar fallback.', error);
+        showMovies(ACTION_FALLBACK, aboutSection);
+    }
 }
 
 // ==========================================================================
