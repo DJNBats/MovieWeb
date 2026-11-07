@@ -42,7 +42,7 @@ O **MovieWeb** é uma aplicação Web front-end moderna construída com **HTML5 
   - Rotação sincronizada do botão circular (`transform: rotate(-70deg)`).
 - **Três Itens de Navegação (Requisito 2):**
   - 🏠 **ITEM 1:** Filmes em Destaque (catálogo principal e pesquisa).
-  - ⭐ **ITEM 2:** Filmes Mais Votados (Top Rated - filmes com melhor classificação).
+  - ⭐ **ITEM 2:** Filmes Mais Votados (Top Rated) — apresentação dos filmes com classificação superior ou igual a 7.5, ordenados por avaliação descendente para destacar os melhores resultados.
   - 🔥 **ITEM 3:** Filmes de Ação (catálogo filtrado por género Ação, ID 28 da API TMDb, com fallback estático).
 - **Integração das Funcionalidades (Requisito 6):**
   - A pesquisa de filmes permanece acessível e operacional em qualquer momento.

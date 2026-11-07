@@ -237,12 +237,16 @@ function getClassByRate(vote) {
 // Conteúdo do Item 2: Filmes Mais Votados
 // ==========================================================================
 function renderTopRated() {
-    // Filtra filmes com avaliação igual ou superior a 7.5 ou ordena por vote_average
     const topMovies = [...cachedMovies]
-        .sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0))
-        .filter(m => (m.vote_average || 0) >= 7.0);
+        .filter((movie) => typeof movie.vote_average === 'number' && movie.vote_average >= 7.5)
+        .sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0));
 
-    showMovies(topMovies.length > 0 ? topMovies : cachedMovies, topRatedSection);
+    if (!topMovies.length) {
+        topRatedSection.innerHTML = '<p style="color: #fff; font-size: 1.2rem; text-align: center; width: 100%;">Nenhum filme com classificação superior ou igual a 7.5.</p>';
+        return;
+    }
+
+    showMovies(topMovies, topRatedSection);
 }
 
 // ==========================================================================
