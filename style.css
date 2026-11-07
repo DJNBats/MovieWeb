@@ -13,7 +13,7 @@
 }
 
 body {
-    background-color: #333;
+    background-color: #0e0f31;
     color: var(--text-color);
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
@@ -63,7 +63,7 @@ body {
 .circle button {
     cursor: pointer;
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     height: 60%;
     background: transparent;
@@ -80,11 +80,11 @@ body {
 
 .circle button#open {
     left: 60%;
-    top: 60%;
+    top: 45%;
 }
 
 .circle button#close {
-    top: 60%;
+    top: 70%;
     transform: rotate(90deg);
     transform-origin: top left;
 }
@@ -145,17 +145,17 @@ nav ul li.active i {
 }
 
 /* Transições escalonadas na abertura do menu */
-.container.show-nav + nav li {
+.container.show-nav+nav li {
     transform: translateX(0);
     transition-delay: 0.3s;
 }
 
-.container.show-nav + nav li:nth-child(2) {
+.container.show-nav+nav li:nth-child(2) {
     margin-left: 15px;
     transition-delay: 0.4s;
 }
 
-.container.show-nav + nav li:nth-child(3) {
+.container.show-nav+nav li:nth-child(3) {
     margin-left: 30px;
     transition-delay: 0.5s;
 }
@@ -255,6 +255,7 @@ header {
         opacity: 0;
         transform: translateY(8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -470,7 +471,7 @@ header {
     header {
         padding-left: 5rem;
     }
-    
+
     .header-content {
         flex-direction: column;
         align-items: stretch;
