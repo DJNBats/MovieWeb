@@ -14,7 +14,7 @@ Conforme as diretrizes da **Aula Prática 2 (Slides 10 a 13)**, o projeto foi de
 | Estudante | Papel / Função | Responsabilidades no Repositório |
 | :--- | :--- | :--- |
 | **Dalton Baptista** (`DJNBats`) | **Responsável pelo Repositório** | Criação e configuração do repositório remoto, gestão de branches, revisão de Pull Requests e merge na branch `main`. Implementação do menu rotativo e integração de vistas. |
-| **Flávio Monteiro** (`FlavioRLMonteiro`) | **Colaborador / Desenvolvedor** | Desenvolvimento de funcionalidades no catálogo de filmes, tratamento de dados da API e implementação de filtros. |
+| **Flávio Monteiro** (`FlavioRLMonteiro`) | **Colaborador / Desenvolvedor** | Implementação do Item 2: filmes em destaque via API TMDb. |
 | **Karen Santos** (`KarenSofiaa`) | **Colaborador / Desenvolvedor** | Implementação do Item 3: filmes de ação via API TMDb. |
 
 ---
