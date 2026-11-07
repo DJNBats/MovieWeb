@@ -5,7 +5,7 @@ const API_KEY = '53178150e837ff10e36ad0cf2dd4485e';
 const API_URL = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
 const IMG_PATH = 'https://image.tmdb.org/t/p/w1280';
 const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query="`;
-
+const ACTION_API = `https://api.themoviedb.org/3/discover/movie?with_genres=28&sort_by=popularity.desc&api_key=${API_KEY}&page=1`;
 // ==========================================================================
 // Elementos do DOM
 // ==========================================================================
@@ -77,6 +77,10 @@ const STATIC_MOVIES = [
     }
 ];
 
+const ACTION_FALLBACK = STATIC_MOVIES.filter(m =>
+    ['Spider-Man: Brand New Day', 'Resident Evil', 'Matchbox the Movie'].includes(m.title)
+);
+
 // Cache local de filmes obtidos da API para alimentar os itens do menu
 let cachedMovies = [...STATIC_MOVIES];
 
@@ -133,8 +137,8 @@ function switchTab(target) {
         renderTopRated();
     } else if (target === 'item3') {
         aboutSection.classList.add('active');
-        sectionTitle.innerHTML = '<i class="fas fa-film"></i> ITEM 3: Filmes de Ação';
-        renderActionMovies();
+        sectionTitle.innerHTML = '<i class="fas fa-fire"></i> ITEM 3: Filmes de Ação';
+        renderAction();
     }
 }
 
@@ -242,10 +246,23 @@ function renderTopRated() {
 }
 
 // ==========================================================================
-// Conteúdo do Item 3: Sobre o Projeto & Equipa de Estudantes
+// Conteúdo do Item 3: Filmes de Ação
 // ==========================================================================
-function renderActionMovies() {
+async function renderAction() {
+    try {
+        const res = await fetch(ACTION_API);
+        if (!res.ok) throw new Error(`Erro na API: ${res.status}`);
+        const data = await res.json();
 
+        if (data.results && data.results.length > 0) {
+            showMovies(data.results, aboutSection);
+        } else {
+            showMovies(ACTION_FALLBACK, aboutSection);
+        }
+    } catch (error) {
+        console.warn('Falha ao carregar filmes de ação. A usar fallback.', error);
+        showMovies(ACTION_FALLBACK, aboutSection);
+    }
 }
 
 // ==========================================================================

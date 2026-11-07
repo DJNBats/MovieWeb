@@ -15,7 +15,7 @@ Conforme as diretrizes da **Aula Prática 2 (Slides 10 a 13)**, o projeto foi de
 | :--- | :--- | :--- |
 | **Dalton Baptista** (`DJNBats`) | **Responsável pelo Repositório** | Criação e configuração do repositório remoto, gestão de branches, revisão de Pull Requests e merge na branch `main`. Implementação do menu rotativo e integração de vistas. |
 | **Flávio Monteiro** (`FlavioRLMonteiro`) | **Colaborador / Desenvolvedor** | Desenvolvimento de funcionalidades no catálogo de filmes, tratamento de dados da API e implementação de filtros. |
-| **Karen Santos** | **Colaboradora / Desenvolvedora** | Desenvolvimento de estilos visuais, secção informativa do projeto e testes de integração multiplataforma. |
+| **Karen Santos** (`KarenSofiaa`) | **Colaborador / Desenvolvedor** | Implementação do Item 3: filmes de ação via API TMDb. |
 
 ---
 
@@ -43,7 +43,7 @@ O **MovieWeb** é uma aplicação Web front-end moderna construída com **HTML5 
 - **Três Itens de Navegação (Requisito 2):**
   - 🏠 **ITEM 1:** Filmes em Destaque (catálogo principal e pesquisa).
   - ⭐ **ITEM 2:** Filmes Mais Votados (Top Rated - filmes com melhor classificação).
-  - ✉️ **ITEM 3:** Sobre o Projeto & Equipa (apresentação detalhada da equipa ISECMAR-UTA, tecnologias e curso).
+  - 🔥 **ITEM 3:** Filmes de Ação (catálogo filtrado por género Ação, ID 28 da API TMDb, com fallback estático).
 - **Integração das Funcionalidades (Requisito 6):**
   - A pesquisa de filmes permanece acessível e operacional em qualquer momento.
   - Ao pesquisar a partir dos itens 2 ou 3, a aplicação regressa automaticamente ao catálogo principal para apresentar os resultados.
@@ -73,7 +73,7 @@ Nenhum colaborador realiza commits diretos na branch principal (`main`). Cada fu
 - `feature-menu-rotativo`: Estrutura do menu rotativo, botões circulares e navegação entre os 3 itens.
 - `feature-item1`: Refinamento do catálogo e pesquisa.
 - `feature-item2`: Secção dos filmes mais votados.
-- `feature-item3`: Secção sobre o projeto e equipa.
+- `feature-item3-acao`: Secção de filmes de ação (Item 3).
 
 ### 2. Fluxo de Trabalho (Workflow Individual)
 ```bash
